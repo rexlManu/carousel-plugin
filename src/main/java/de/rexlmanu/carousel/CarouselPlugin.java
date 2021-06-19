@@ -46,7 +46,6 @@ public class CarouselPlugin extends JavaPlugin {
         this.registerCommand();
 
         this.carousels.stream()
-                .filter(carousel -> carousel.location().getWorld().isChunkLoaded(carousel.location().getBlockX() >> 4, carousel.location().getBlockZ() >> 4))
                 .peek(Carousel::spawn)
                 .forEach(Carousel::start);
     }
