@@ -16,7 +16,7 @@ The main command is /carousel with the alias /c and the permission carousel.comm
 
 ## Spigot
 
-- [spigot](https://www.spigotmc.org/resources/)
+- [spigot](https://www.spigotmc.org/resources/carousel.93457/)
 
 ## License
 
