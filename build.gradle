@@ -1,0 +1,49 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'java'
+}
+
+sourceCompatibility = targetCompatibility = '11'
+compileJava.options.encoding = "UTF-8"
+
+group 'de.rexlmanu.carousel'
+version project.property('version')
+
+tasks.build.dependsOn tasks.shadowJar
+
+repositories {
+    mavenCentral()
+    maven {
+        name "spigot-repo"
+        url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven {
+        name "bungeecord-repo"
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [
+                version    : version,
+        ]
+        duplicatesStrategy = 'include'
+    }
+}
+
+dependencies {
+    implementation('org.projectlombok:lombok:1.18.20')
+    annotationProcessor('org.projectlombok:lombok:1.18.20')
+
+    implementation('org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT')
+}
+
+shadowJar {
+    configurations = [project.configurations.compile]
+}

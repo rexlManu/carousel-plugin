@@ -1,0 +1,10 @@
+main: de.rexlmanu.carousel.CarouselPlugin
+version: @version@
+name: Carousel
+author: Emmanuel Lampe <rexlManu>
+commands:
+  carousel:
+    aliases: c
+    usage: /carousel help
+    description: The main command to control the carousels
+    permission: carousel.command.use
