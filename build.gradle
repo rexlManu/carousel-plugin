@@ -9,7 +9,7 @@ sourceCompatibility = targetCompatibility = '11'
 compileJava.options.encoding = "UTF-8"
 
 group 'de.rexlmanu.carousel'
-version project.property('version')
+version 1.0
 
 tasks.build.dependsOn tasks.shadowJar
 
@@ -46,4 +46,5 @@ dependencies {
 
 shadowJar {
     configurations = [project.configurations.compile]
+    archiveName = "carousel-${project.version}.jar"
 }
