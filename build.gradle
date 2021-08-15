@@ -5,7 +5,7 @@ plugins {
     id 'java'
 }
 
-sourceCompatibility = targetCompatibility = '11'
+sourceCompatibility = targetCompatibility = '1.8'
 compileJava.options.encoding = "UTF-8"
 
 group 'de.rexlmanu.carousel'
@@ -31,7 +31,7 @@ repositories {
 processResources {
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [
-                version    : version,
+                version    : project.version,
         ]
         duplicatesStrategy = 'include'
     }

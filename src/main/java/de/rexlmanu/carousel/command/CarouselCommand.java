@@ -18,12 +18,14 @@ import java.util.stream.Stream;
 public class CarouselCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) return true;
+        if (!(sender instanceof Player))
+            return true;
         if (args.length <= 1) {
             sender.sendMessage(ChatColor.GRAY + "Usage:");
             sender.sendMessage(ChatColor.GRAY + "/carousel create <name>");
             sender.sendMessage(ChatColor.GRAY + "/carousel setlocation <name>");
-            sender.sendMessage(ChatColor.GRAY + "/carousel setting <name> <amount=8, ticks=1, degreeIncrease=2, radius=4, stepHeight=0.05, maxHeight=1> <value>");
+            sender.sendMessage(ChatColor.GRAY
+                    + "/carousel setting <name> <amount=8, ticks=1, degreeIncrease=2, radius=4, stepHeight=0.05, maxHeight=1> <value>");
             sender.sendMessage(ChatColor.GRAY + "/carousel spawn <name>");
             sender.sendMessage(ChatColor.GRAY + "/carousel start <name>");
             sender.sendMessage(ChatColor.GRAY + "/carousel destroy <name>");
@@ -33,24 +35,17 @@ public class CarouselCommand implements CommandExecutor, TabExecutor {
 
         if (args.length == 2) {
             String name = args[1];
-            Optional<Carousel> optionalCarousel = CarouselPlugin.plugin().carousels().stream().filter(carousel -> carousel.name().equals(name)).findAny();
-            if (optionalCarousel.isEmpty() && !args[0].equals("create")) {
+            Optional<Carousel> optionalCarousel = CarouselPlugin.plugin().carousels().stream()
+                    .filter(carousel -> carousel.name().equals(name)).findAny();
+            if (!optionalCarousel.isPresent() && !args[0].equals("create")) {
                 sender.sendMessage(ChatColor.RED + "The carousel could not be found.");
                 return true;
             }
             switch (args[0]) {
                 case "create":
                     sender.sendMessage(ChatColor.GRAY + "You just created a carousel.");
-                    CarouselPlugin.plugin().carousels().add(new Carousel(
-                            name,
-                            8,
-                            1,
-                            2,
-                            4,
-                            0.05,
-                            1,
-                            ((Player) sender).getLocation()
-                    ));
+                    CarouselPlugin.plugin().carousels()
+                            .add(new Carousel(name, 8, 1, 2, 4, 0.05, 1, ((Player) sender).getLocation()));
                     CarouselPlugin.plugin().save();
                     break;
                 case "setlocation":
@@ -79,11 +74,13 @@ public class CarouselCommand implements CommandExecutor, TabExecutor {
             return true;
         }
         if (args.length == 4) {
-            if (!args[0].equals("setting")) return false;
+            if (!args[0].equals("setting"))
+                return false;
 
             String name = args[1];
-            Optional<Carousel> optionalCarousel = CarouselPlugin.plugin().carousels().stream().filter(carousel -> carousel.name().equals(name)).findAny();
-            if (optionalCarousel.isEmpty()) {
+            Optional<Carousel> optionalCarousel = CarouselPlugin.plugin().carousels().stream()
+                    .filter(carousel -> carousel.name().equals(name)).findAny();
+            if (!optionalCarousel.isPresent()) {
                 sender.sendMessage(ChatColor.RED + "The carousel could not be found.");
                 return true;
             }
@@ -135,30 +132,29 @@ public class CarouselCommand implements CommandExecutor, TabExecutor {
             System.out.println(args[i]);
         }
         if (args.length == 1)
-            return Stream.of("create", "setlocation", "spawn", "start", "destroy", "delete", "setting").filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
+            return Stream.of("create", "setlocation", "spawn", "start", "destroy", "delete", "setting")
+                    .filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
         if (args.length == 2) {
             if (Arrays.asList("setlocation", "spawn", "start", "destroy", "delete", "setting").contains(args[0])) {
-                return CarouselPlugin.plugin().carousels().stream().map(Carousel::name).filter(s -> s.startsWith(args[1])).collect(Collectors.toList());
+                return CarouselPlugin.plugin().carousels().stream().map(Carousel::name)
+                        .filter(s -> s.startsWith(args[1])).collect(Collectors.toList());
             }
         }
-        if (args.length == 3 && args[0].equals("setting") && CarouselPlugin.plugin().carousels().stream().anyMatch(carousel -> carousel.name().equals(args[1]))) {
-            return Stream.of("amount",
-                    "ticks",
-                    "degreeIncrease",
-                    "stepHeight",
-                    "maxHeight",
-                    "radius").filter(s -> s.startsWith(args[2])).collect(Collectors.toList());
+        if (args.length == 3 && args[0].equals("setting")
+                && CarouselPlugin.plugin().carousels().stream().anyMatch(carousel -> carousel.name().equals(args[1]))) {
+            return Stream.of("amount", "ticks", "degreeIncrease", "stepHeight", "maxHeight", "radius")
+                    .filter(s -> s.startsWith(args[2])).collect(Collectors.toList());
         }
         if (args.length == 4 && args[0].equals("setting")) {
-            Optional<Carousel> any = CarouselPlugin.plugin().carousels().stream().filter(carousel -> carousel.name().equals(args[1])).findAny();
-            if (any.isEmpty()) return new ArrayList<>();
-            Optional<String> setting = Stream.of("amount",
-                    "ticks",
-                    "degreeIncrease",
-                    "stepHeight",
-                    "maxHeight",
-                    "radius").filter(s -> args[2].equals(s)).findAny();
-            if (setting.isEmpty()) return new ArrayList<>();
+            Optional<Carousel> any = CarouselPlugin.plugin().carousels().stream()
+                    .filter(carousel -> carousel.name().equals(args[1])).findAny();
+            if (!any.isPresent())
+                return new ArrayList<>();
+            Optional<String> setting = Stream
+                    .of("amount", "ticks", "degreeIncrease", "stepHeight", "maxHeight", "radius")
+                    .filter(s -> args[2].equals(s)).findAny();
+            if (!setting.isPresent())
+                return new ArrayList<>();
             switch (setting.get()) {
                 case "amount":
                     return Collections.singletonList(String.valueOf(any.get().amount()));
